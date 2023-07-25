@@ -2,22 +2,15 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Registration from './components/registration'
 import Login from './components/log_in'
 import axios from 'axios'
 
-
 const App = () => {
-  const getQuote = () => {
-    axios.get('https://motivationping.com/money-quotes/').then(res => {
-      console.log(res)
-    }).catch(err => {
-      console.log(err)
-    })
-  }
   const [showLogin, setShowLogin] = useState(false)
   const [showRegistration, setShowRegistration] = useState(false)
+  const [myHomePage, setHomePage] = useState([])
 
   const handleLoginButtonClick = () => {
     setShowLogin(true)
@@ -29,6 +22,21 @@ const App = () => {
     setShowRegistration(true)
   }
 
+  
+    const showhomepage = async () => {
+      // try {
+        const response = await axios.get(
+          'http://localhost:1337/name'
+        )
+        setHomePage(response.data) // Assuming the server returns an array of products
+      // catch (error) { console.error('Error fetching products:', error)
+      
+    }
+    console.log(setHomePage);
+
+    showhomepage()
+  
+
   return (
     <div>
       <h1>Teebay</h1>
@@ -37,8 +45,23 @@ const App = () => {
 
       {showLogin && <Login />}
       {showRegistration && <Registration />}
+      
+      <ul>
+         
+          <li>{myHomePage}</li>
+        
+      </ul>
     </div>
   )
 }
 
-export default App
+export default App;
+
+/*
+login
+email password ==
+
+email existing email 
+<passw styleName=""></passw>
+
+*/

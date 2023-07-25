@@ -1,12 +1,29 @@
 import React, { useState } from 'react'
 import Registration from './registration'
+import axios from 'axios'
+
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showLogin, setShowLogin] = useState(true)
   const [showRegistration, setShowRegistration] = useState(false)
+  
 
+  const logIn = async (email, password) => {
+      // try {
+        // console.log(email, password)
+        const response = await axios.post('http://localhost:1337/login', {
+          email: email,
+          password: password,
+        })
+        console.log(response.data) // Assuming the server returns an array of products
+      // catch (error) { console.error('Error fetching products:', error)
+      
+    }
+    
+
+    
   const handleLoginSubmit = (event) => {
     event.preventDefault()
     // Handle login form submission logic here (e.g., sending data to the server for authentication)
@@ -43,7 +60,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button type='submit'>Login</button>
+      <button type='submit' onClick={() => {
+        logIn(email, password);
+      }}>Login</button>
       <button onClick={handleRegistrationButtonClick}>
         Don't have an account? Click here
       </button>
