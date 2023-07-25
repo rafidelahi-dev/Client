@@ -2,28 +2,26 @@ import React, { useState } from 'react'
 import Registration from './registration'
 import axios from 'axios'
 
-
+//Main function for Login
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showLogin, setShowLogin] = useState(true)
   const [showRegistration, setShowRegistration] = useState(false)
   
-
+  //Function to call the server side local host
   const logIn = async (email, password) => {
-      // try {
+      try {
         // console.log(email, password)
         const response = await axios.post('http://localhost:1337/login', {
           email: email,
           password: password,
         })
-        console.log(response.data) // Assuming the server returns an array of products
-      // catch (error) { console.error('Error fetching products:', error)
-      
+        console.log(response.data) 
+      }
+      catch (error) { console.error('Error fetching products:', error)  
+    }   
     }
-    
-
-    
   const handleLoginSubmit = (event) => {
     event.preventDefault()
     // Handle login form submission logic here (e.g., sending data to the server for authentication)
