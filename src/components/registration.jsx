@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Login from './log_in'
 import axios from 'axios'
 
+
 const Registration = () => {
   const [userName, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -41,7 +42,7 @@ const Registration = () => {
 
   if (showRegistration) {
     return (
-      <form onSubmit={handleRegistrationSubmit}>
+      <form className='tall' onSubmit={handleRegistrationSubmit}>
         <h2>Registration Form</h2>
         <div>
           <label htmlFor='username'>Username:</label>
@@ -70,8 +71,10 @@ const Registration = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type='submit'>Register</button>
-        <button onClick={handleLoginButtonClick}>
+        <button type='submit' className='large-button'>
+          Register
+        </button>
+        <button className='button' onClick={handleLoginButtonClick}>
           Already have an account? Click here
         </button>
       </form>

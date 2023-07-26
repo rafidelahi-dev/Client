@@ -1,16 +1,18 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { json } from 'react-router-dom'
 
-const NameForm = ({ onSubmit, productName }) => {
-  const [localProductName, setLocalProductName] = useState('')
+
+const NameForm = ({ onSubmit }) => {
+  const [productName, setProductName] = useState('')
 
   const handleNameChange = (e) => {
-    setLocalProductName(e.target.value)
+    setProductName(e.target.value)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit(localProductName)
+    onSubmit(productName)
   }
 
   return (
@@ -24,7 +26,7 @@ const NameForm = ({ onSubmit, productName }) => {
   )
 }
 
-const PriceAndRentalPriceForm = ({ onSubmit }) => {
+const PriceAndRentalPriceForm = ({ onSubmit, onBack }) => {
   const [productPrice, setProductPrice] = useState('')
   const [productRentalPrice, setProductRentalPrice] = useState('')
 
@@ -36,8 +38,8 @@ const PriceAndRentalPriceForm = ({ onSubmit }) => {
     setProductRentalPrice(e.target.value)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = () => {
+    
     onSubmit(productPrice, productRentalPrice)
   }
 
@@ -59,12 +61,13 @@ const PriceAndRentalPriceForm = ({ onSubmit }) => {
           onChange={handleRentalPriceChange}
         />
       </label>
+      <button onClick={onBack}>Back</button>
       <button type='submit'>Next</button>
     </form>
   )
 }
 
-const CategoryForm = ({ onSubmit }) => {
+const CategoryForm = ({ onSubmit, onBack }) => {
   const [productCategory, setProductCategory] = useState('')
 
   const handleCategoryChange = (e) => {
@@ -80,12 +83,15 @@ const CategoryForm = ({ onSubmit }) => {
     <form onSubmit={handleSubmit}>
       <label>
         Product Category:
-        <input
-          type='text'
-          value={productCategory}
-          onChange={handleCategoryChange}
-        />
+        <select value={productCategory} onChange={handleCategoryChange}>
+          <option value=''>Select a category</option>
+          <option value='electronics'>Electronics</option>
+          <option value='food'>Food</option>
+          <option value='books'>Books</option>
+        </select>
       </label>
+      <button onClick={onBack}>Back</button>
+      <button type='submit'>Complete</button>
     </form>
   )
 }
@@ -94,107 +100,126 @@ const MyProducts = () => {
   const [showNameForm, setShowNameForm] = useState(false)
   const [productName, setProductName] = useState('')
   const [showPriceAndRentalForm, setShowPriceAndRentalForm] = useState(false)
+  const [productPrice, setProductPrice] = useState('')
+  const [productRentalPrice, setProductRentalPrice] = useState('')
   const [showCategoryForm, setShowCategoryForm] = useState(false)
-  const [showMainContent, setShowMainContent] = useState(true) // Track main content visibility
-  const [newItemAdded, setNewItemAdded] = useState(false) // Track if a new item was added
-  
+  const [productCategory, setProductCategory] = useState('')
+  const [showMainContent, setShowMainContent] = useState(true)
+  const [newItemAdded, setNewItemAdded] = useState(false)
+  const [currentStep, setCurrentStep] = useState(0)
+  const [receivedData, setReceivedData] = useState(null)
+
+  const handleBackButtonClick = () => {
+    setCurrentStep((prevStep) => prevStep - 1)
+  }
 
   const handleAddButtonClick = () => {
     setShowNameForm(true)
-    setShowMainContent(false) // Hide the main content when 'ADD' is clicked
-    setNewItemAdded(false) // Reset the "new item added" state
+    setShowMainContent(false)
+    setNewItemAdded(false)
   }
 
   const handleNameFormSubmit = (productName) => {
-    // Save productName to state or context for later use
-    // Show the next form (price and rental price)
-    console.log('Product Name:', productName)
-    setShowNameForm(false)
-    setShowPriceAndRentalForm(true)
+    setProductName(productName)
+    setCurrentStep(1) // Move to the next step
   }
 
   const handlePriceAndRentalFormSubmit = (productPrice, productRentalPrice) => {
-    // Save productPrice and productRentalPrice to state or context for later use
-    // Show the next form (category)
-    console.log('Product Price:', productPrice)
-    console.log('Product Rental Price:', productRentalPrice)
-    setShowPriceAndRentalForm(false)
-    setShowCategoryForm(true)
+    setProductPrice(productPrice)
+    setProductRentalPrice(productRentalPrice)
+    setCurrentStep(2) // Move to the next step
   }
 
-  const handleCategoryFormSubmit = async (productCategory) => {
-    // Save productCategory to state or context for later use
-    // Send the collected data to the backend
-    console.log('Product Category:', productCategory)
-    // Uncomment the following block when you want to send data to the backend
-    // try {
-    //   const response = await axios.post('http://localhost:1337/name/myproducts/add', {
-    //     name: productName,
-    //     price: productPrice,
-    //     rentalPrice: productRentalPrice,
-    //     category: productCategory,
-    //   });
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const handleCategoryFormSubmit = (productCategory) => {
+    setProductCategory(productCategory)
+    setCurrentStep(3) // Move to the next step
   }
 
-  const handleCompleteButton = () => {
+  const handleCompleteButton = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:1337/name/myproducts/add',
+        {
+          name: productName,
+          price: productPrice,
+          rentalPrice: productRentalPrice,
+          category: productCategory,
+        }
+      )
+
+      // Set the received data in the state only on successful response
+      setReceivedData(response.data)
+        console.log(response)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+
     // When 'Complete' button is clicked, show the main content again
     setShowMainContent(true)
-    setNewItemAdded(true) // Set the "new item added" state
-    setShowCategoryForm(false) // Hide the category form after completing
+    setNewItemAdded(true)
+    setShowCategoryForm(false)
+    setCurrentStep(0) // Reset the current step to the initial step
   }
+
   return (
     <div>
-      {/* Render the message conditionally */}
+      <div>
+        <h2>Teebay ... giving you the best deals</h2>
+      </div>
       {newItemAdded ? (
-        <>
+        <div>
           <h1>A new item was added</h1>
           <button onClick={handleAddButtonClick}>ADD</button>
-        </> ) : (
-        <>
-          {/* Render the 'There is no item' line and 'ADD' button conditionally */}
-          {showMainContent && (
-            <>
-              <h1>There is no item</h1>
-              <button onClick={handleAddButtonClick}>ADD</button>
-            </>
-          )}
+        </div>
+      ) : (
+        <div>
+          {currentStep === 0 && (
+            <div>
+              {showMainContent && (
+                <div>
+                  <h1>There is no item</h1>
+                  <button onClick={handleAddButtonClick}>ADD</button>
+                </div>
+              )}
 
-          {/* Render pop-up forms conditionally */}
-          {showNameForm && <NameForm onSubmit={handleNameFormSubmit} />}
-          {showPriceAndRentalForm && (
+              {showNameForm && <NameForm onSubmit={handleNameFormSubmit} />}
+            </div>
+          )}
+          {currentStep === 1 && (
             <PriceAndRentalPriceForm
               onSubmit={handlePriceAndRentalFormSubmit}
+              onBack={handleBackButtonClick}
             />
           )}
-          {showCategoryForm && (
-            <CategoryForm onSubmit={handleCategoryFormSubmit} />
+
+          {currentStep === 2 && (
+            <CategoryForm
+              onSubmit={handleCategoryFormSubmit}
+              onBack={handleBackButtonClick}
+            />
           )}
 
-          {/* Render 'Complete' button when on the last form */}
-          {showCategoryForm && (
+          {currentStep === 3 && (
             <button onClick={handleCompleteButton}>Complete</button>
           )}
-        </>
+          <div>{JSON.stringify(receivedData)}</div>
+          {receivedData && (
+            <div>
+              <h3>Received Data:</h3>
+              <p>Name: {receivedData.name}</p>
+              <p>Price: {receivedData.price}</p>
+              <p>Rental Price: {receivedData.rentalPrice}</p>
+              <p>Category: {receivedData.category}</p>
+            </div>
+          )}
+        </div>
       )}
     </div>
   )
 }
+
 export default MyProducts
-
-
-
-
-
-
-
-
-
-
-
 
 /*import axios from 'axios'
 import React, { useState } from 'react'

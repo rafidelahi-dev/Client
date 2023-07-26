@@ -34,7 +34,7 @@ const Homepage = () => {
  }
  
 return (
-  <div>
+  <div className='card-container'>
     <div className='card'>
       <h2>My products</h2>
       <p>No items yet</p>
@@ -46,13 +46,11 @@ return (
     <div className='card'>
       <h2>All products</h2>
       <p>No items yet</p>
-
       <button onClick={handleVisitButton}>Visit</button>
     </div>
-    <button onClick={handleButton}>Add Product</button>
   </div>
 )
+};
 
-}
 
-export default Homepage // Ensure you have a default export
+export default Homepage;

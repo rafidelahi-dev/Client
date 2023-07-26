@@ -38,7 +38,7 @@ const Login = () => {
 
   if (showLogin) {
   return (
-    <form onSubmit={handleLoginSubmit}>
+    <form className = 'tall' onSubmit={handleLoginSubmit}>
       <h2>Login Form</h2>
       <div>
         <label htmlFor='email'>Email:</label>
@@ -58,13 +58,16 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button type='submit' onClick={() => {
-        logIn(email, password);
-      }}>Login</button>
-      <button onClick={handleRegistrationButtonClick}>
+      <button
+        type='submit'
+        className='large-button'
+        onClick={() => logIn(email, password)}
+      >
+        Login
+      </button>
+      <button className='button' onClick={handleRegistrationButtonClick}>
         Don't have an account? Click here
       </button>
-      
     </form>
   )
 }
