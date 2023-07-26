@@ -148,9 +148,12 @@ const MyProducts = () => {
       )
 
       // Set the received data in the state only on successful response
+      if (response.data) {
       setReceivedData(response.data)
         console.log(response)
       console.log(response.data)
+      }
+      console.log(response)
     } catch (error) {
       console.log(error)
     }
@@ -160,6 +163,7 @@ const MyProducts = () => {
     setNewItemAdded(true)
     setShowCategoryForm(false)
     setCurrentStep(0) // Reset the current step to the initial step
+    console.log(receivedData)
   }
 
   return (
@@ -203,7 +207,7 @@ const MyProducts = () => {
           {currentStep === 3 && (
             <button onClick={handleCompleteButton}>Complete</button>
           )}
-          <div>{JSON.stringify(receivedData)}</div>
+          
           {receivedData && (
             <div>
               <h3>Received Data:</h3>
