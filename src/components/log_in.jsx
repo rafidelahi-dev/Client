@@ -70,3 +70,22 @@ const Login = () => {
 }
 }
 export default Login
+
+
+/*
+add product button
+data going to server
+server handles the data, (using prisma using chatgpt)
+server pushes the data in the database
+
+Mock product:
+
+{id": 48,
+"title": "asdfsd",
+"description": "asfdasd",
+"purchase_price": 100,
+"rent_price": 100,
+"rent_duration": "daily",
+"ownerId": 1, }
+
+*/
