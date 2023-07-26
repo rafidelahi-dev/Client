@@ -2,7 +2,7 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Registration from './components/registration'
 import Login from './components/log_in'
 import axios from 'axios'

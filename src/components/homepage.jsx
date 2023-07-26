@@ -38,15 +38,15 @@ return (
     <div className='card'>
       <h2>My products</h2>
       <p>No items yet</p>
-      <button onClick={handleVisitButton}>Visit</button>
-    </div>
-    <div className='card'>
-      <h2>All products</h2>
-      <p>No items yet</p>
       <Link to='/myproducts'>
         {/* Use Link to navigate to MyProducts */}
         <button onClick={handleVisitButton}>Visit</button>
       </Link>
+    </div>
+    <div className='card'>
+      <h2>All products</h2>
+      <p>No items yet</p>
+
       <button onClick={handleVisitButton}>Visit</button>
     </div>
     <button onClick={handleButton}>Add Product</button>
