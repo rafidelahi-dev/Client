@@ -187,3 +187,28 @@ button:focus {
   outline: none;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 }
+
+.newProduct-card {
+  width: 60%;
+  padding: 20px;
+  border: 2px solid darkgreen;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.newProduct-card h3 {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.newProduct-card ul {
+  list-style-type: disc; /* Add bullet points to list items */
+  padding-left: 20px; /* Adjust the indentation of bullet points */
+}
+
+.newProduct-card p {
+  margin: 0;
+  margin-bottom: 5px;
+}

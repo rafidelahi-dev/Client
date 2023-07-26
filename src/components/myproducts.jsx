@@ -174,6 +174,15 @@ const MyProducts = () => {
       {newItemAdded ? (
         <div>
           <h1>A new item was added</h1>
+          {receivedData && (
+            <div className='newProduct-card'>
+              <h3>My product</h3>
+              <p>Name: {receivedData.name}</p>
+              <p>Price: {receivedData.price}</p>
+              <p>Rental Price: {receivedData.rentalPrice}</p>
+              <p>Category: {receivedData.category}</p>
+            </div>
+          )}
           <button onClick={handleAddButtonClick}>ADD</button>
         </div>
       ) : (
@@ -207,7 +216,7 @@ const MyProducts = () => {
           {currentStep === 3 && (
             <button onClick={handleCompleteButton}>Complete</button>
           )}
-          
+
           {receivedData && (
             <div>
               <h3>Received Data:</h3>
